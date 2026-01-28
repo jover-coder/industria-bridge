@@ -32,7 +32,7 @@ jobs:
         run: npm install
 
       - name: Build app
-        run: ${{ matrix.build_cmd }}
+        run: ${{ matrix.build_cmd }} -- --publish never
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -41,17 +41,17 @@ jobs:
         with:
           name: dist-${{ matrix.os }}
           path: dist/*
-          
-   release:
+
+  release:
     needs: build
     runs-on: ubuntu-latest
     permissions:
       contents: write
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        
+
       - name: Download Windows artifacts
         uses: actions/download-artifact@v4
         with:
