@@ -5,11 +5,9 @@
   "main": "src/main.js",
   "scripts": {
     "start": "electron .",
-    "build:win": "electron-builder --win portable",
-    "build:win:installer": "electron-builder --win nsis",
-    "build:mac": "electron-builder --mac zip",
-    "build:linux": "electron-builder --linux AppImage",
-    "build:all": "electron-builder --win portable --mac zip --linux AppImage"
+    "build:win": "electron-builder --win portable --publish never",
+    "build:mac": "electron-builder --mac zip --publish never",
+    "build:linux": "electron-builder --linux AppImage --publish never"
   },
   "author": "IndustrIA",
   "license": "MIT",
@@ -31,27 +29,18 @@
       "assets/**/*"
     ],
     "win": {
-      "target": ["portable", "nsis"],
-      "icon": "assets/icon.ico"
-    },
-    "portable": {
+      "target": ["portable"],
       "artifactName": "IndustrIA-Bridge-Portable.exe"
     },
     "mac": {
-      "target": ["zip", "dmg"],
-      "icon": "assets/icon.icns",
-      "category": "public.app-category.productivity"
+      "target": ["zip"],
+      "category": "public.app-category.productivity",
+      "artifactName": "IndustrIA-Bridge-mac.zip"
     },
     "linux": {
       "target": ["AppImage"],
-      "icon": "assets/icon.png",
-      "category": "Utility"
-    },
-    "nsis": {
-      "oneClick": true,
-      "installerIcon": "assets/icon.ico",
-      "uninstallerIcon": "assets/icon.ico",
-      "artifactName": "IndustrIA-Bridge-Setup.exe"
+      "category": "Utility",
+      "artifactName": "IndustrIA-Bridge.AppImage"
     }
   }
 }
