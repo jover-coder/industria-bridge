@@ -6,8 +6,10 @@
   "scripts": {
     "start": "electron .",
     "build:win": "electron-builder --win portable --publish never",
+    "build:win:installer": "electron-builder --win nsis --publish never",
     "build:mac": "electron-builder --mac zip --publish never",
-    "build:linux": "electron-builder --linux AppImage --publish never"
+    "build:linux": "electron-builder --linux AppImage --publish never",
+    "build:all": "electron-builder --win portable --mac zip --linux AppImage --publish never"
   },
   "author": "IndustrIA",
   "license": "MIT",
@@ -21,6 +23,7 @@
   "build": {
     "appId": "com.industria.bridge",
     "productName": "IndustrIA Bridge",
+    "publish": null,
     "directories": {
       "output": "dist"
     },
