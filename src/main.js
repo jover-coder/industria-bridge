@@ -39,10 +39,8 @@ function createWindow() {
   mainWindow.loadFile(path.join(__dirname, 'index.html'));
   mainWindow.setMenuBarVisibility(false);
 
-  mainWindow.on('close', (event) => {
-    if (store.get('minimizeToTray')) {
-      event.preventDefault();
-      mainWindow.hide();
+    mainWindow.on('close', (event) => {
+    if (!app.isQuitting && store.get('minimizeToTray')) {
     }
   });
 }
