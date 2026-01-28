@@ -31,7 +31,7 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-           - name: Build app
+      - name: Build app
         run: ${{ matrix.build_cmd }}
 
       - name: Upload artifacts
