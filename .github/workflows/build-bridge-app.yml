@@ -1,0 +1,56 @@
+name: Build Bridge App
+
+on:
+  push:
+    tags:
+      - 'bridge-v*'
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        include:
+          - os: windows-latest
+            build_cmd: npm run build:win
+          - os: macos-latest
+            build_cmd: npm run build:mac
+          - os: ubuntu-latest
+            build_cmd: npm run build:linux
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm ci
+      - run: ${{ matrix.build_cmd }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist-${{ matrix.os }}
+          path: dist/*
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist-windows-latest
+          path: dist
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist-macos-latest
+          path: dist
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist-ubuntu-latest
+          path: dist
+      - uses: softprops/action-gh-release@v1
+        with:
+          files: dist/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
