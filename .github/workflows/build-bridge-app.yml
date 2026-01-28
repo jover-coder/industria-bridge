@@ -20,13 +20,24 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: '20'
-      - run: npm install
-      - run: ${{ matrix.build_cmd }}
-      - uses: actions/upload-artifact@v4
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build app
+        run: ${{ matrix.build_cmd }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
         with:
           name: dist-${{ matrix.os }}
           path: dist/*
@@ -36,21 +47,30 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+
     steps:
-      - uses: actions/download-artifact@v4
+      - name: Download Windows artifacts
+        uses: actions/download-artifact@v4
         with:
           name: dist-windows-latest
           path: dist
-      - uses: actions/download-artifact@v4
+
+      - name: Download macOS artifacts
+        uses: actions/download-artifact@v4
         with:
           name: dist-macos-latest
           path: dist
-      - uses: actions/download-artifact@v4
+
+      - name: Download Linux artifacts
+        uses: actions/download-artifact@v4
         with:
           name: dist-ubuntu-latest
           path: dist
-      - uses: softprops/action-gh-release@v1
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
         with:
           files: dist/*
+          generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
