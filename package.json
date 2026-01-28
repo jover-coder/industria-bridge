@@ -1,0 +1,57 @@
+{
+  "name": "industria-bridge",
+  "version": "1.0.0",
+  "description": "App Puente para enviar archivos de corte a tronzadoras CNC",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "electron .",
+    "build:win": "electron-builder --win portable",
+    "build:win:installer": "electron-builder --win nsis",
+    "build:mac": "electron-builder --mac zip",
+    "build:linux": "electron-builder --linux AppImage",
+    "build:all": "electron-builder --win portable --mac zip --linux AppImage"
+  },
+  "author": "IndustrIA",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^28.0.0",
+    "electron-builder": "^24.9.1"
+  },
+  "dependencies": {
+    "electron-store": "^8.1.0"
+  },
+  "build": {
+    "appId": "com.industria.bridge",
+    "productName": "IndustrIA Bridge",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "src/**/*",
+      "assets/**/*"
+    ],
+    "win": {
+      "target": ["portable", "nsis"],
+      "icon": "assets/icon.ico"
+    },
+    "portable": {
+      "artifactName": "IndustrIA-Bridge-Portable.exe"
+    },
+    "mac": {
+      "target": ["zip", "dmg"],
+      "icon": "assets/icon.icns",
+      "category": "public.app-category.productivity"
+    },
+    "linux": {
+      "target": ["AppImage"],
+      "icon": "assets/icon.png",
+      "category": "Utility"
+    },
+    "nsis": {
+      "oneClick": true,
+      "installerIcon": "assets/icon.ico",
+      "uninstallerIcon": "assets/icon.ico",
+      "artifactName": "IndustrIA-Bridge-Setup.exe"
+    }
+  }
+}
