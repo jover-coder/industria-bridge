@@ -381,7 +381,8 @@ async function processJob(job) {
 
 async function syncMachines() {
   try {
-    const machinesFromServer = await fetchWithAuth('/api/cnc/puente/configuracion');
+    const response = await fetchWithAuth('/api/cnc/puente/configuracion');
+const machinesFromServer = response.maquinas || [];
     const localMachines = store.get('machines') || {};
     
     for (const machine of machinesFromServer) {
